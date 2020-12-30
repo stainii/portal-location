@@ -1,7 +1,8 @@
 package be.stijnhooft.portal.location.facades;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
 import be.stijnhooft.portal.location.services.DistanceService;
+import be.stijnhooft.portal.model.location.Distance;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class DistanceFacade {
     private final GeocodeFacade geocodeFacade;
     private final DistanceService distanceService;
 
-    public Optional<Double> calculateDistanceInKm(String location1, String location2) {
+    public Optional<Distance> calculateDistanceInKm(String location1, String location2) {
         Optional<GeocodeResult> geocodeResult1 = geocodeFacade.geocode(location1);
         if (geocodeResult1.isEmpty()) {
             return Optional.empty();
@@ -32,7 +33,12 @@ public class DistanceFacade {
         double latitude2 = Double.parseDouble(geocodeResult2.get().getLatitude());
         double longitude2 = Double.parseDouble(geocodeResult2.get().getLongitude());
 
-        return Optional.of(distanceService.calculateDistanceInKm(latitude1, longitude1, latitude2, longitude2));
+        var km = distanceService.calculateDistanceInKm(latitude1, longitude1, latitude2, longitude2);
+        return Optional.of(Distance.builder()
+                .km(km)
+                .location1Query(location1)
+                .location2Query(location2)
+                .build());
     }
 
 }

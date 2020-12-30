@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.location.services.geocode;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;

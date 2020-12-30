@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.location.services.geocode;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import lombok.extern.slf4j.Slf4j;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,8 +1,8 @@
 package be.stijnhooft.portal.location.facades;
 
 import be.stijnhooft.portal.location.cache.CacheService;
-import be.stijnhooft.portal.location.domain.GeocodeResult;
 import be.stijnhooft.portal.location.services.geocode.GeocodeService;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.location.services.geocode;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.AfterEach;

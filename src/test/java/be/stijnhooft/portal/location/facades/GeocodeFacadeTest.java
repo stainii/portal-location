@@ -1,10 +1,10 @@
 package be.stijnhooft.portal.location.facades;
 
 import be.stijnhooft.portal.location.cache.CacheService;
-import be.stijnhooft.portal.location.domain.GeocodeResult;
 import be.stijnhooft.portal.location.services.geocode.CachedGeocodeService;
 import be.stijnhooft.portal.location.services.geocode.LocationIqGeocodeService;
 import be.stijnhooft.portal.location.services.geocode.OpenWeatherMapCityIdGeocodeService;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,8 +116,6 @@ class GeocodeFacadeTest {
     @Test
     void whenNothingIsFoundAnEmptyOptionalIsReturned() {
         // arrange
-        var expectedResult = GeocodeResult.builder().build();
-
         when(cachedGeocodeService.enabled()).thenReturn(true);
         when(cachedGeocodeService.order()).thenReturn(0);
         when(cachedGeocodeService.geocode("Aalst")).thenReturn(Optional.empty());

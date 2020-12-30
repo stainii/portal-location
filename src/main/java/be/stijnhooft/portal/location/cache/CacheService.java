@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.location.cache;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

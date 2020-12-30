@@ -1,7 +1,8 @@
 package be.stijnhooft.portal.location.facades;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
 import be.stijnhooft.portal.location.services.DistanceService;
+import be.stijnhooft.portal.model.location.Distance;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,7 +38,7 @@ class DistanceFacadeTest {
         when(distanceService.calculateDistanceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(100.0);
 
         // act
-        Optional<Double> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
+        Optional<Distance> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
 
         // assert
         verify(geocodeFacade).geocode("Zottegem");
@@ -45,7 +46,9 @@ class DistanceFacadeTest {
         verify(distanceService).calculateDistanceInKm(1.0, 2.0, 3.0, 4.0);
         verifyNoMoreInteractions(geocodeFacade, distanceService);
 
-        assertEquals(Optional.of(100.0), result);
+        assertEquals(100.0, result.get().getKm());
+        assertEquals("Zottegem", result.get().getLocation1Query());
+        assertEquals("Aalst", result.get().getLocation2Query());
     }
 
     @Test
@@ -54,7 +57,7 @@ class DistanceFacadeTest {
         when(geocodeFacade.geocode("Zottegem")).thenReturn(Optional.empty());
 
         // act
-        Optional<Double> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
+        Optional<Distance> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
 
         // assert
         verify(geocodeFacade).geocode("Zottegem");
@@ -73,7 +76,7 @@ class DistanceFacadeTest {
 
 
         // act
-        Optional<Double> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
+        Optional<Distance> result = distanceFacade.calculateDistanceInKm("Zottegem", "Aalst");
 
         // assert
         verify(geocodeFacade).geocode("Zottegem");

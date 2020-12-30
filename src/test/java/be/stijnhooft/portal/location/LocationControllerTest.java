@@ -1,14 +1,16 @@
 package be.stijnhooft.portal.location;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
 import be.stijnhooft.portal.location.facades.DistanceFacade;
 import be.stijnhooft.portal.location.facades.GeocodeFacade;
+import be.stijnhooft.portal.model.location.Distance;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import org.ehcache.Cache;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,20 +76,25 @@ class LocationControllerTest {
     }
 
     @Test
-    public void distanceWhenFound() throws Exception {
-        when(distanceFacade.calculateDistanceInKm("Oombergen", "Zottegem")).thenReturn(Optional.of(2.29));
+    public void singleDistanceWhenFound() throws Exception {
+        when(distanceFacade.calculateDistanceInKm("Oombergen", "Zottegem")).thenReturn(
+                Optional.of(Distance.builder()
+                        .location1Query("Oombergen")
+                        .location2Query("Zottegem")
+                        .km(2.29)
+                        .build()));
 
         mockMvc.perform(get("/distance/?location1Query=Oombergen&location2Query=Zottegem"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"km\": 2.29}"));
+                .andExpect(content().json("{\"km\": 2.29, \"location1Query\":\"Oombergen\", \"location2Query\":\"Zottegem\"}"));
 
         verify(distanceFacade).calculateDistanceInKm("Oombergen", "Zottegem");
         verifyNoMoreInteractions(distanceFacade);
     }
 
     @Test
-    public void distanceWhenNotFound() throws Exception {
+    public void singleDistanceWhenNotFound() throws Exception {
         when(distanceFacade.calculateDistanceInKm("non-existing", "Zottegem")).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/distance/?location1Query=non-existing&location2Query=Zottegem"))
@@ -94,6 +102,58 @@ class LocationControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(distanceFacade).calculateDistanceInKm("non-existing", "Zottegem");
+        verifyNoMoreInteractions(distanceFacade);
+    }
+
+    @Test
+    public void multipleDistanceWhenFound() throws Exception {
+        when(distanceFacade.calculateDistanceInKm("Oombergen", "Zottegem")).thenReturn(
+                Optional.of(Distance.builder()
+                        .location1Query("Oombergen")
+                        .location2Query("Zottegem")
+                        .km(2.29)
+                        .build()));
+        when(distanceFacade.calculateDistanceInKm("Aalst", "Zottegem")).thenReturn(
+                Optional.of(Distance.builder()
+                        .location1Query("Aalst")
+                        .location2Query("Zottegem")
+                        .km(15)
+                        .build()));
+
+        mockMvc.perform(post("/distance/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("[" +
+                        "{\"location1Query\":\"Oombergen\", \"location2Query\":\"Zottegem\"}, " +
+                        "{\"location1Query\":\"Aalst\", \"location2Query\":\"Zottegem\"}" +
+                        "]"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[" +
+                        "{\"km\": 2.29, \"location1Query\":\"Oombergen\", \"location2Query\":\"Zottegem\"}," +
+                        "{\"km\": 15.0, \"location1Query\":\"Aalst\", \"location2Query\":\"Zottegem\"}" +
+                        "]"));
+
+        verify(distanceFacade).calculateDistanceInKm("Oombergen", "Zottegem");
+        verify(distanceFacade).calculateDistanceInKm("Aalst", "Zottegem");
+        verifyNoMoreInteractions(distanceFacade);
+    }
+
+    @Test
+    public void multipleDistanceWhenNotFound() throws Exception {
+        when(distanceFacade.calculateDistanceInKm("Oombergen", "Zottegem")).thenReturn(Optional.empty());
+        when(distanceFacade.calculateDistanceInKm("Aalst", "Zottegem")).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/distance/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("[" +
+                        "{\"location1Query\":\"Oombergen\", \"location2Query\":\"Zottegem\"}, " +
+                        "{\"location1Query\":\"Aalst\", \"location2Query\":\"Zottegem\"}" +
+                        "]"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(distanceFacade).calculateDistanceInKm("Oombergen", "Zottegem");
+        verify(distanceFacade).calculateDistanceInKm("Aalst", "Zottegem");
         verifyNoMoreInteractions(distanceFacade);
     }
 

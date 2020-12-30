@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.location.services.geocode;
 
-import be.stijnhooft.portal.location.domain.GeocodeResult;
+import be.stijnhooft.portal.model.location.GeocodeResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
