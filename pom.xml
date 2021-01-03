@@ -9,7 +9,7 @@
     </parent>
     <groupId>be.stijnhooft</groupId>
     <artifactId>portal-location</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>portal-location</name>
     <description>Provides location services, like geocoding</description>
 
