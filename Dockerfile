@@ -19,5 +19,5 @@ ENTRYPOINT exec java ${JAVA_OPTS_LOCATION} \
  --be.stijnhooft.portal.location.service.geocode.LocationIQ.order=${LOCATION_IQ_ORDER} \
  --be.stijnhooft.portal.location.service.geocode.LocationIQ.api-key=${LOCATION_IQ_API_KEY} \
  --be.stijnhooft.portal.location.service.geocode.OpenWeatherMap.enabled=${OPEN_WEATHER_MAP_ENABLED} \
- --be.stijnhooft.portal.location.service.geocode.OpenWeatherMap.order=${OPEN_WEATHER_MAP_ORDER}
+ --be.stijnhooft.portal.location.service.geocode.OpenWeatherMap.order=${OPEN_WEATHER_MAP_ORDER} \
  --eureka.client.service-url.defaultZone=${EUREKA_SERVICE_URL}

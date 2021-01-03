@@ -99,13 +99,13 @@
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </resource>
         </resources>
         <testResources>
             <testResource>
                 <directory>${basedir}/src/test/resources</directory>
-                <filtering>false</filtering>
+                <filtering>true</filtering>
             </testResource>
         </testResources>
 
@@ -118,6 +118,17 @@
                         <!-- create a multilayered jar that can be used to build layered docker images -->
                         <enabled>true</enabled>
                     </layers>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>gz</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
 
