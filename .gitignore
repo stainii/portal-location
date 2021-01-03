@@ -19,6 +19,12 @@ target/
 *.iml
 *.ipr
 
+
+# System Files
+.DS_Store
+Thumbs.db
+
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,3 +37,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/geocode/
