@@ -204,4 +204,26 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>portal-nexus-releases</id>
+            <url>https://server.stijnhooft.be/nexus/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>portal-nexus-snapshots</id>
+            <url>https://server.stijnhooft.be/nexus/repository/maven-snapshots/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>portal-nexus-releases</id>
+            <url>https://server.stijnhooft.be/nexus/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>portal-nexus-snapshots</id>
+            <url>https://server.stijnhooft.be/nexus/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
